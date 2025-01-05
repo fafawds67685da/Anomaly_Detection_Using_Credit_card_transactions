@@ -7,8 +7,8 @@ from io import StringIO
 # Set page config at the very beginning
 st.set_page_config(page_title="💲")
 
-# Backend URL (FastAPI backend running locally)
-backend_url = "http://127.0.0.1:8000"
+# Backend URL (FastAPI backend running on Render)
+backend_url = "https://anomaly-detection-using-credit-card.onrender.com"
 
 # Set up a simple gradient background for the app
 st.markdown(
@@ -70,19 +70,18 @@ if predict_file is not None:
         )
 
         # Show plot (Decision Tree)
- # Show plot (Decision Tree)
-st.subheader("Decision Tree Plot")
-plot_response = requests.post(f"{backend_url}/plot/")
-if plot_response.status_code == 200:
-    # Display the image of the decision tree
-    st.image(plot_response.content, caption="Decision Tree Plot", use_container_width=True)
+        st.subheader("Decision Tree Plot")
+        plot_response = requests.post(f"{backend_url}/plot/")
+        if plot_response.status_code == 200:
+            # Display the image of the decision tree
+            st.image(plot_response.content, caption="Decision Tree Plot", use_container_width=True)
 
-    # Provide download option for the plot
-    st.download_button(
-        label="Download Decision Tree Plot",
-        data=plot_response.content,
-        file_name="plot.png",
-        mime="image/png"
-    )
-else:
-    st.error(f"Failed to fetch the plot with status code {plot_response.status_code}")
+            # Provide download option for the plot
+            st.download_button(
+                label="Download Decision Tree Plot",
+                data=plot_response.content,
+                file_name="plot.png",
+                mime="image/png"
+            )
+        else:
+            st.error(f"Failed to fetch the plot with status code {plot_response.status_code}")
